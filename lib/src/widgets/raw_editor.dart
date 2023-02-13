@@ -1432,6 +1432,14 @@ class RawEditorState extends EditorState
   @override
   void performSelector(String selectorName) {
     // TODO: implement performSelector
+    final intent = intentForMacOSSelector(selectorName);
+
+    if (intent != null) {
+      final primaryContext = primaryFocus?.context;
+      if (primaryContext != null) {
+        Actions.invoke(primaryContext, intent);
+      }
+    }
   }
 }
 

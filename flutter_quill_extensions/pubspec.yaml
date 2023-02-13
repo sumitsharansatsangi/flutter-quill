@@ -3,23 +3,27 @@ description: Embed extensions for flutter_quill including image, video, formula 
 version: 0.1.0
 homepage: https://bulletjournal.us/home/index.html
 repository: https://github.com/singerdmx/flutter-quill/tree/master/flutter_quill_extensions
+publish_to: none
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.19.0 <3.0.0"
   flutter: ">=3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  flutter_quill: ^6.0.0
-
-  image_picker: ^0.8.5+3
+  flutter_quill:
+    path: ../
+  image_picker: ^0.8.6+1
   photo_view: ^0.14.0
-  video_player: ^2.4.2
-  youtube_player_flutter: ^8.1.1
+  video_player: ^2.5.1
+  youtube_player_flutter: ^8.1.2
   gallery_saver: ^2.3.2
-  math_keyboard: ^0.1.6
+  math_keyboard:
+    git: 
+      url: https://github.com/sumitsharansatsangi/math_keyboard.git
+      path: ./math_keyboard
   string_validator: ^0.3.0
 
 #dependency_overrides:
@@ -29,7 +33,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic: ^1.11.1
+  lints: ^2.0.1
 
 # The following section is specific to Flutter packages.
 flutter:

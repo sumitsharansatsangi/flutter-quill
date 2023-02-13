@@ -1,3 +1,13 @@
+ [6.3.4]
+* Update clipboard status prior to showing selected text overlay.
+
+# [6.3.3]
+* Fixed handling of mac intents.
+
+# [6.3.2]
+* Added `unknownEmbedBuilder` to QuillEditor.
+* Fix error style when input chinese japanese or korean.
+
 # [6.3.1]
 * Add color property to the basic factory function.
 
