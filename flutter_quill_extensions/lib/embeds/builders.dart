@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_quill/extensions.dart' as base;
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill/translations.dart';
-import 'package:gallery_saver/gallery_saver.dart';
+import 'package:saver_gallery/saver_gallery.dart';
+import 'package:http/http.dart' as http;
 import 'package:math_keyboard/math_keyboard.dart';
 import 'package:tuple/tuple.dart';
 
@@ -219,14 +220,28 @@ Widget _menuOptionsForReadonlyImage(
                 icon: Icons.save,
                 color: Colors.greenAccent,
                 text: 'Save'.i18n,
-                onPressed: () {
-                  imageUrl = appendFileExtensionToImageUrl(imageUrl);
-                  GallerySaver.saveImage(imageUrl).then((_) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text('Saved'.i18n)));
-                    Navigator.pop(context);
-                  });
-                },
+                 onPressed: () async {
+                   imageUrl = appendFileExtensionToImageUrl(imageUrl);
+                   try {
+                     final response = await http.get(Uri.parse(imageUrl));
+                     if (response.statusCode == 200) {
+                       final fileName = imageUrl.split('/').last;
+                       final result = await SaverGallery.saveImage(
+                         response.bodyBytes,
+                         fileName: fileName,
+                         androidRelativePath: "Pictures",
+                         skipIfExists: false,
+                       );
+                       if (result.isSuccess) {
+                         ScaffoldMessenger.of(context)
+                             .showSnackBar(SnackBar(content: Text('Saved'.i18n)));
+                         Navigator.pop(context);
+                       }
+                     }
+                   } catch (e) {
+                     // Handle error if needed
+                   }
+                 },
               );
               final zoomOption = _SimpleDialogItem(
                 icon: Icons.zoom_in,

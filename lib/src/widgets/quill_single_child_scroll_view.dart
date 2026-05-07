@@ -95,7 +95,7 @@ class _SingleChildViewport extends SingleChildRenderObjectWidget {
   }
 }
 
-class _RenderSingleChildViewport extends RenderBox
+base class _RenderSingleChildViewport extends RenderBox
     with RenderObjectWithChildMixin<RenderBox>
     implements RenderAbstractViewport {
   _RenderSingleChildViewport({
@@ -287,7 +287,7 @@ class _RenderSingleChildViewport extends RenderBox
 
   @override
   RevealedOffset getOffsetToReveal(RenderObject target, double alignment,
-      {Rect? rect}) {
+      {Axis? axis, Rect? rect}) {
     rect ??= target.paintBounds;
     if (target is! RenderBox) {
       return RevealedOffset(offset: offset.pixels, rect: rect);

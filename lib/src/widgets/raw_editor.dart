@@ -247,7 +247,7 @@ class RawEditorState extends EditorState
   final GlobalKey _editorKey = GlobalKey();
 
   KeyboardVisibilityController? _keyboardVisibilityController;
-  StreamSubscription<bool>? _keyboardVisibilitySubscription;
+  StreamSubscription<KeyboardVisibilityStatus>? _keyboardVisibilitySubscription;
   bool _keyboardVisible = false;
 
   // Selection overlay
@@ -765,9 +765,10 @@ class RawEditorState extends EditorState
           _keyboardVisible = true;
         } else {
           _keyboardVisibilityController = KeyboardVisibilityController();
-          _keyboardVisible = _keyboardVisibilityController!.isVisible;
+          _keyboardVisible = _keyboardVisibilityController!.isVisible == KeyboardVisibilityStatus.visible;
           _keyboardVisibilitySubscription =
-              _keyboardVisibilityController?.onChange.listen((visible) {
+              _keyboardVisibilityController?.onChange.listen((status) {
+            final visible = status == KeyboardVisibilityStatus.visible;
             _keyboardVisible = visible;
             if (visible) {
               _onChangeTextEditingValue(!_hasFocus);

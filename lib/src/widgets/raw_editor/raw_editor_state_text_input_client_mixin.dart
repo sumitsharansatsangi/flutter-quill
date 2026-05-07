@@ -288,6 +288,11 @@ mixin RawEditorStateTextInputClientMixin on EditorState
   }
 
   @override
+  void insertContent(KeyboardInsertedContent content) {
+    // no-op
+  }
+
+  @override
   void connectionClosed() {
     if (!hasConnection) {
       return;

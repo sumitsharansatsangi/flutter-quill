@@ -160,4 +160,16 @@ mixin RawEditorStateSelectionDelegateMixin on EditorState
 
   @override
   bool get selectAllEnabled => widget.toolbarOptions.selectAll;
+
+  @override
+  bool get liveTextInputEnabled => false;
+
+  @override
+  bool get lookUpEnabled => true;
+
+  @override
+  bool get searchWebEnabled => true;
+
+  @override
+  bool get shareEnabled => true;
 }

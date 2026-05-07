@@ -6,8 +6,8 @@ repository: https://github.com/singerdmx/flutter-quill/tree/master/flutter_quill
 publish_to: none
 
 environment:
-  sdk: ">=2.19.0 <3.0.0"
-  flutter: ">=3.0.0"
+  sdk: ">=3.11.0 <4.0.0"
+  flutter: ">=3.41.0"
 
 dependencies:
   flutter:
@@ -15,25 +15,24 @@ dependencies:
 
   flutter_quill:
     path: ../
-  image_picker: ^0.8.6+1
-  photo_view: ^0.14.0
-  video_player: ^2.5.1
-  youtube_player_flutter: ^8.1.2
-  gallery_saver: ^2.3.2
+  image_picker:
+    git: https://github.com/kumsumit/image_picker.git
+  photo_view: ^0.15.0
+  video_player: 
+    git: https://github.com/kumsumit/video_player.git
+  youtube_player_flutter:
+    git: https://github.com/sumitsharansatsangi/youtube_player_flutter.git
+  saver_gallery: 
+    git: https://github.com/kumsumit/saver_gallery.git
   math_keyboard:
-    git: 
-      url: https://github.com/sumitsharansatsangi/math_keyboard.git
-      path: ./math_keyboard
-  string_validator: ^0.3.0
-
-#dependency_overrides:
-#  flutter_quill:
-#    path: ../
+    git: https://github.com/kumsumit/math_keyboard.git
+  string_validator: ^1.2.0
+  http: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  lints: ^2.0.1
+  lints: ^6.1.0
 
 # The following section is specific to Flutter packages.
 flutter:
