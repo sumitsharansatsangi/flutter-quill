@@ -295,9 +295,7 @@ class EditorTextSelectionOverlay {
             ? newSelection.extent
             : const TextPosition(offset: 0);
         break;
-      default:
-        throw 'Invalid position';
-    }
+      }
 
     final currSelection = newSelection != null
         ? DragTextSelection(
@@ -459,9 +457,7 @@ class _TextSelectionHandleOverlay extends StatefulWidget {
         return renderObject.selectionStartInViewport;
       case _TextSelectionHandlePosition.END:
         return renderObject.selectionEndInViewport;
-      default:
-        throw 'Invalid position';
-    }
+      }
   }
 }
 
@@ -547,9 +543,7 @@ class _TextSelectionHandleOverlayState
               isNormalized ? position.offset : widget.selection.extentOffset,
         );
         break;
-      default:
-        throw 'Invalid widget.position';
-    }
+      }
 
     if (newSelection.baseOffset >= newSelection.extentOffset) {
       return; // don't allow order swapping.
