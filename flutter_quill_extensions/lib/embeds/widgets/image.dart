@@ -3,7 +3,7 @@ import 'dart:io' as io;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:photo_view/photo_view.dart';
+import 'package:photo_viewer/photo_viewer.dart';
 
 import '../utils.dart';
 
@@ -77,13 +77,13 @@ class ImageTapWrapper extends StatelessWidget {
 
   final String imageUrl;
 
-  ImageProvider _imageProviderByUrl(String imageUrl) {
-    if (imageUrl.startsWith('http')) {
-      return NetworkImage(imageUrl);
-    }
+  // ImageProvider _imageProviderByUrl(String imageUrl) {
+  //   if (imageUrl.startsWith('http')) {
+  //     return NetworkImage(imageUrl);
+  //   }
 
-    return FileImage(io.File(imageUrl));
-  }
+  //   return FileImage(io.File(imageUrl));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -94,16 +94,14 @@ class ImageTapWrapper extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            PhotoView(
-              imageProvider: _imageProviderByUrl(imageUrl),
-              loadingBuilder: (context, event) {
-                return Container(
+            PhotoViewerImage(
+              imageUrl: imageUrl,
+              overlayBuilder:(_)=> Container(
                   color: Colors.black,
                   child: const Center(
                     child: CircularProgressIndicator(),
                   ),
-                );
-              },
+                )
             ),
             Positioned(
               right: 10,
