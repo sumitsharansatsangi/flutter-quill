@@ -773,11 +773,9 @@ class DeltaIterator {
   ///
   /// If this iterator reached the end of the Delta then returns a retain
   /// operation with its length set to [maxLength].
-  // TODO: Note that we used double.infinity as the default value
-  // for length here
-  //       but this can now cause a type error since operation length is
-  //       expected to be an int. Changing default length to [maxLength] is
-  //       a workaround to avoid breaking changes.
+  // Note: previously used double.infinity as the default value for length, but
+  // that caused a type error since operation length is expected to be an int.
+  // Using [maxLength] avoids breaking changes while preserving the semantics.
   Operation next([int length = maxLength]) {
     if (_modificationCount != delta._modificationCount) {
       throw ConcurrentModificationError(delta);

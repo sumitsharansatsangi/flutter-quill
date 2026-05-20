@@ -131,6 +131,11 @@ abstract class RenderEditableBox extends RenderBox {
   /// render object's [node].
   TextSelectionPoint getExtentEndpointForSelection(TextSelection textSelection);
 
+  /// Returns the full height of the glyph at the given [position], or null if
+  /// not available. Unlike [preferredLineHeight], this reflects the actual
+  /// measured character height and is not inflated by [TextStyle.height].
+  double? getFullHeightForCaret(TextPosition position);
+
   /// Returns the [Rect] in local coordinates for the caret at the given text
   /// position.
   Rect getLocalRectForCaret(TextPosition position);

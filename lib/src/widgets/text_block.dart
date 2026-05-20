@@ -577,6 +577,16 @@ class RenderEditableTextBlock extends RenderEditableContainerBox
   }
 
   @override
+  double? getFullHeightForCaret(TextPosition position) {
+    final child = childAtPosition(position);
+    final localPosition = TextPosition(
+      offset: position.offset - child.container.offset,
+      affinity: position.affinity,
+    );
+    return child.getFullHeightForCaret(localPosition);
+  }
+
+  @override
   Rect getCaretPrototype(TextPosition position) {
     final child = childAtPosition(position);
     final localPosition = TextPosition(

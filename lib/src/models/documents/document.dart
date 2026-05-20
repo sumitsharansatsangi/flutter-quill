@@ -177,8 +177,9 @@ class Document {
 
   /// Returns [Line] located at specified character [offset].
   ChildQuery queryChild(int offset) {
-    // TODO: prevent user from moving caret after last line-break.
-    final res = _root.queryChild(offset, true);
+    // Clamp to the last valid position (before the trailing line-break) so the
+    // caret cannot be placed after the document's final newline.
+    final res = _root.queryChild(offset < length ? offset : length - 1, true);
     if (res.node is Line) {
       return res;
     }

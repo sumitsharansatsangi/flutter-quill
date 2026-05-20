@@ -824,22 +824,19 @@ class RenderEditableTextLine extends RenderEditableBox {
       cursorCont.style.height ??
       preferredLineHeight(const TextPosition(offset: 0));
 
-  // TODO: This is no longer producing the highest-fidelity caret
-  // heights for Android, especially when non-alphabetic languages
-  // are involved. The current implementation overrides the height set
-  // here with the full measured height of the text on Android which looks
-  // superior (subjectively and in terms of fidelity) in _paintCaret. We
-  // should rework this properly to once again match the platform. The constant
-  // _kCaretHeightOffset scales poorly for small font sizes.
-  //
   /// On iOS, the cursor is taller than the cursor on Android. The height
   /// of the cursor for iOS is approximate and obtained through an eyeball
   /// comparison.
+  ///
+  /// On Android the CursorPainter overrides the height with the full measured
+  /// glyph height, so the prototype height here is used only for initial layout
+  /// and hit-testing. Using [cursorHeight] directly (no fixed offset) avoids
+  /// the previous -4.0 constant that scaled poorly at small font sizes.
   void _computeCaretPrototype() {
     if (isAppleOS()) {
       _caretPrototype = Rect.fromLTWH(0, 0, cursorWidth, cursorHeight + 2);
     } else {
-      _caretPrototype = Rect.fromLTWH(0, 2, cursorWidth, cursorHeight - 4.0);
+      _caretPrototype = Rect.fromLTWH(0, 2, cursorWidth, cursorHeight);
     }
   }
 
@@ -1169,6 +1166,10 @@ class RenderEditableTextLine extends RenderEditableBox {
     }
     markNeedsPaint();
   }
+
+  @override
+  double? getFullHeightForCaret(TextPosition position) =>
+      _body?.getFullHeightForCaret(position);
 
   @override
   Rect getCaretPrototype(TextPosition position) => _caretPrototype;

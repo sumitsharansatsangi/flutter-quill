@@ -1318,6 +1318,14 @@ class RenderEditor extends RenderEditableContainerBox
         TextPosition(offset: position.offset - child.container.offset));
   }
 
+  /// Returns the actual measured glyph height at [position], unaffected by
+  /// [TextStyle.height] line-spacing inflation.
+  double? getFullHeightForCaret(TextPosition position) {
+    final child = childAtPosition(position);
+    return child.getFullHeightForCaret(
+        TextPosition(offset: position.offset - child.container.offset));
+  }
+
   @override
   TextPosition getPositionForOffset(Offset offset) {
     final local = globalToLocal(offset);

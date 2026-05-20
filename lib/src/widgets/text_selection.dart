@@ -585,16 +585,15 @@ class _TextSelectionHandleOverlayState
         break;
     }
 
-    // TODO: This logic doesn't work for TextStyle.height larger 1.
-    // It makes the extent handle top end on iOS extend too high which makes
-    // stick out above the selection background.
-    // May have to use getSelectionBoxes instead of preferredLineHeight.
-    // or expose TextStyle on the render object and calculate
-    // preferredLineHeight / style.height
     final textPosition = widget.position == _TextSelectionHandlePosition.START
         ? widget.selection.base
         : widget.selection.extent;
-    final lineHeight = widget.renderObject.preferredLineHeight(textPosition);
+    // Use the actual measured glyph height so the handle stays flush with the
+    // selection background even when TextStyle.height > 1 inflates
+    // preferredLineHeight with extra line-spacing.
+    final lineHeight =
+        widget.renderObject.getFullHeightForCaret(textPosition) ??
+            widget.renderObject.preferredLineHeight(textPosition);
     final handleAnchor =
         widget.selectionControls.getHandleAnchor(type!, lineHeight);
     final handleSize = widget.selectionControls.getHandleSize(lineHeight);
