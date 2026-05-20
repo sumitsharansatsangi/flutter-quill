@@ -57,12 +57,10 @@ class RawEditor extends StatefulWidget {
       this.readOnly = false,
       this.placeholder,
       this.onLaunchUrl,
-      this.toolbarOptions = const ToolbarOptions(
-        copy: true,
-        cut: true,
-        paste: true,
-        selectAll: true,
-      ),
+      this.enableCopy = true,
+      this.enableCut = true,
+      this.enablePaste = true,
+      this.enableSelectAll = true,
       this.showSelectionHandles = false,
       bool? showCursor,
       this.textCapitalization = TextCapitalization.none,
@@ -112,11 +110,17 @@ class RawEditor extends StatefulWidget {
   /// a link in the document.
   final ValueChanged<String>? onLaunchUrl;
 
-  /// Configuration of toolbar options.
-  ///
-  /// By default, all options are enabled. If [readOnly] is true,
-  /// paste and cut will be disabled regardless.
-  final ToolbarOptions toolbarOptions;
+  /// Whether copying from the editor is enabled.
+  final bool enableCopy;
+
+  /// Whether cutting from the editor is enabled.
+  final bool enableCut;
+
+  /// Whether pasting into the editor is enabled.
+  final bool enablePaste;
+
+  /// Whether selecting all text in the editor is enabled.
+  final bool enableSelectAll;
 
   /// Whether to show selection handles.
   ///
@@ -433,7 +437,7 @@ class RawEditorState extends EditorState
           actions: _actions,
           child: Focus(
             focusNode: widget.focusNode,
-            onKey: _onKey,
+            onKeyEvent: _onKey,
             child: QuillKeyboardListener(
               child: Container(
                 constraints: constraints,
@@ -446,13 +450,15 @@ class RawEditorState extends EditorState
     );
   }
 
-  KeyEventResult _onKey(node, RawKeyEvent event) {
+  KeyEventResult _onKey(node, KeyEvent event) {
     // Don't handle key if there is a meta key pressed.
-    if (event.isAltPressed || event.isControlPressed || event.isMetaPressed) {
+    if (HardwareKeyboard.instance.isAltPressed ||
+        HardwareKeyboard.instance.isControlPressed ||
+        HardwareKeyboard.instance.isMetaPressed) {
       return KeyEventResult.ignored;
     }
 
-    if (event is! RawKeyDownEvent) {
+    if (event is! KeyDownEvent) {
       return KeyEventResult.ignored;
     }
 
@@ -475,7 +481,7 @@ class RawEditorState extends EditorState
     return KeyEventResult.ignored;
   }
 
-  KeyEventResult _handleSpaceKey(RawKeyEvent event) {
+  KeyEventResult _handleSpaceKey(KeyEvent event) {
     final child =
         controller.document.queryChild(controller.selection.baseOffset);
     if (child.node == null) {
@@ -506,7 +512,7 @@ class RawEditorState extends EditorState
     return KeyEventResult.handled;
   }
 
-  KeyEventResult _handleTabKey(RawKeyEvent event) {
+  KeyEventResult _handleTabKey(KeyEvent event) {
     final child =
         controller.document.queryChild(controller.selection.baseOffset);
 
@@ -539,7 +545,7 @@ class RawEditorState extends EditorState
     if (parentBlock.style.containsKey(Attribute.ol.key) ||
         parentBlock.style.containsKey(Attribute.ul.key) ||
         parentBlock.style.containsKey(Attribute.checked.key)) {
-      controller.indentSelection(!event.isShiftPressed);
+      controller.indentSelection(HardwareKeyboard.instance.isShiftPressed);
       return KeyEventResult.handled;
     }
 

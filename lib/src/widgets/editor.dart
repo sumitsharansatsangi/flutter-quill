@@ -431,7 +431,7 @@ class QuillEditorState extends State<QuillEditor>
       cursorOpacityAnimates = true;
       cursorColor ??= selectionTheme.cursorColor ?? cupertinoTheme.primaryColor;
       selectionColor = selectionTheme.selectionColor ??
-          cupertinoTheme.primaryColor.withOpacity(0.40);
+          cupertinoTheme.primaryColor.withValues(alpha: 0.40);
       cursorRadius ??= const Radius.circular(2);
       cursorOffset = Offset(
           iOSHorizontalOffset / MediaQuery.of(context).devicePixelRatio, 0);
@@ -441,7 +441,7 @@ class QuillEditorState extends State<QuillEditor>
       cursorOpacityAnimates = false;
       cursorColor ??= selectionTheme.cursorColor ?? theme.colorScheme.primary;
       selectionColor = selectionTheme.selectionColor ??
-          theme.colorScheme.primary.withOpacity(0.40);
+          theme.colorScheme.primary.withValues(alpha: 0.40);
     }
 
     final showSelectionToolbar =
@@ -458,12 +458,10 @@ class QuillEditorState extends State<QuillEditor>
       readOnly: widget.readOnly,
       placeholder: widget.placeholder,
       onLaunchUrl: widget.onLaunchUrl,
-      toolbarOptions: ToolbarOptions(
-        copy: showSelectionToolbar,
-        cut: showSelectionToolbar,
-        paste: showSelectionToolbar,
-        selectAll: showSelectionToolbar,
-      ),
+      enableCopy: showSelectionToolbar,
+      enableCut: showSelectionToolbar,
+      enablePaste: showSelectionToolbar,
+      enableSelectAll: showSelectionToolbar,
       showSelectionHandles: isMobile(theme.platform),
       showCursor: widget.showCursor,
       cursorStyle: CursorStyle(
@@ -517,15 +515,13 @@ class QuillEditorState extends State<QuillEditor>
     );
 
     if (kIsWeb) {
-      // Intercept RawKeyEvent on Web to prevent it from propagating to parents
-      // that might interfere with the editor key behavior, such as
-      // SingleChildScrollView. Thanks to @wliumelb for the workaround.
-      // See issue https://github.com/singerdmx/flutter-quill/issues/304
-      return RawKeyboardListener(
-        onKey: (_) {},
+      // Intercept keyboard events on Web to prevent them from propagating to
+      // parents that might interfere with editor key behavior.
+      return KeyboardListener(
         focusNode: FocusNode(
-          onKey: (node, event) => KeyEventResult.skipRemainingHandlers,
+          onKeyEvent: (node, event) => KeyEventResult.skipRemainingHandlers,
         ),
+        onKeyEvent: (_) {},
         child: editor,
       );
     }
@@ -661,7 +657,7 @@ class _QuillEditorSelectionGestureDetectorBuilder
   }
 
   bool isShiftClick(PointerDeviceKind deviceKind) {
-    final pressed = RawKeyboard.instance.keysPressed;
+    final pressed = HardwareKeyboard.instance.logicalKeysPressed;
     return deviceKind == PointerDeviceKind.mouse &&
         (pressed.contains(LogicalKeyboardKey.shiftLeft) ||
             pressed.contains(LogicalKeyboardKey.shiftRight));
@@ -934,8 +930,10 @@ class RenderEditor extends RenderEditableContainerBox
   }
 
   bool get _shiftPressed =>
-      RawKeyboard.instance.keysPressed.contains(LogicalKeyboardKey.shiftLeft) ||
-      RawKeyboard.instance.keysPressed.contains(LogicalKeyboardKey.shiftRight);
+      HardwareKeyboard.instance.logicalKeysPressed.contains(
+          LogicalKeyboardKey.shiftLeft) ||
+      HardwareKeyboard.instance.logicalKeysPressed.contains(
+          LogicalKeyboardKey.shiftRight);
 
   void setStartHandleLayerLink(LayerLink value) {
     if (_startHandleLayerLink == value) {

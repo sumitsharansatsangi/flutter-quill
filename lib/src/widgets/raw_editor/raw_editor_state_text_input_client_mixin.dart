@@ -168,6 +168,12 @@ mixin RawEditorStateTextInputClientMixin on EditorState
     // no-op
   }
 
+  @override
+  bool onFocusReceived() {
+    // No special handling required when focus is received.
+    return true;
+  }
+
   // The time it takes for the floating cursor to snap to the text aligned
   // cursor position after the user has finished placing it.
   static const Duration _floatingCursorResetTime = Duration(milliseconds: 125);
