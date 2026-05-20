@@ -133,7 +133,7 @@ class _ColorButtonState extends State<ColorButton> {
   }
 
   void _changeColor(BuildContext context, Color color) {
-    var hex = color.value.toRadixString(16);
+    var hex = (((color.a * 255.0).round().clamp(0, 255) << 24) | ((color.r * 255.0).round().clamp(0, 255) << 16) | ((color.g * 255.0).round().clamp(0, 255) << 8) | (color.b * 255.0).round().clamp(0, 255)).toRadixString(16);
     if (hex.startsWith('ff')) {
       hex = hex.substring(2);
     }

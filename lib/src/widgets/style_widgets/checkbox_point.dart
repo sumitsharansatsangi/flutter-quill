@@ -34,15 +34,15 @@ class _CheckboxPointState extends State<CheckboxPoint> {
     final fillColor = widget.value
         ? (widget.enabled
             ? theme.colorScheme.primary
-            : theme.colorScheme.onSurface.withOpacity(0.5))
+            : theme.colorScheme.onSurface.withAlpha((0.5 * 255).round()))
         : theme.colorScheme.surface;
     final borderColor = widget.value
         ? (widget.enabled
             ? theme.colorScheme.primary
-            : theme.colorScheme.onSurface.withOpacity(0))
+            : theme.colorScheme.onSurface.withAlpha((0 * 255).round()))
         : (widget.enabled
-            ? theme.colorScheme.onSurface.withOpacity(0.5)
-            : theme.colorScheme.onSurface.withOpacity(0.3));
+            ? theme.colorScheme.onSurface.withAlpha((0.5 * 255).round())
+            : theme.colorScheme.onSurface.withAlpha((0.3 * 255).round()));
     return Center(
       child: SizedBox(
         width: widget.size,

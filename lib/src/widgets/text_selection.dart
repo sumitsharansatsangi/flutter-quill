@@ -358,6 +358,7 @@ class EditorTextSelectionOverlay {
         link: toolbarLayerLink,
         showWhenUnlinked: false,
         offset: -editingRegion.topLeft,
+        // ignore: deprecated_member_use
         child: selectionCtrls.buildToolbar(
             context,
             editingRegion,
