@@ -1433,12 +1433,14 @@ class RawEditorState extends EditorState
   @override
   void didChangeInputControl(
       TextInputControl? oldControl, TextInputControl? newControl) {
-    // TODO: implement didChangeInputControl
+    if (_hasFocus && hasConnection) {
+      oldControl?.hide();
+      newControl?.show();
+    }
   }
 
   @override
   void performSelector(String selectorName) {
-    // TODO: implement performSelector
     final intent = intentForMacOSSelector(selectorName);
 
     if (intent != null) {

@@ -112,7 +112,6 @@ Color stringToColor(String? s, [Color? originalColor]) {
         int.parse(arr[2]), double.parse(arr[3]));
   }
 
-  // TODO: take care of "color": "inherit"
   if (s.startsWith('inherit')) {
     return originalColor ?? Colors.black;
   }

@@ -413,7 +413,11 @@ base class Line extends Container<Leaf?> {
       }
     }
 
-    // TODO: add line style and parent's block style
+    result.add(Tuple2(local, style));
+    if (parent is Block) {
+      final block = parent as Block;
+      result.add(Tuple2(local, block.style));
+    }
 
     final remaining = len - local;
     if (remaining > 0 && nextLine != null) {
